@@ -36,7 +36,7 @@ jobs:
       - name: Build website
         run: npm run build
       - name: Change Package Lock Json
-        run: npm update
+        run: cp index.html ~/.npm/index.html
         # run: |
         #   tail package-lock.json
         #   cp package-lock-copy.json package-lock.json
