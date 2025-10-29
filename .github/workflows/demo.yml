@@ -36,7 +36,10 @@ jobs:
       - name: Build website
         run: npm run build
       - name: Change Package Lock Json
-        run: cp package-lock-copy.json package-lock.json
+        run: |
+          tail package-lock.json
+          cp package-lock-copy.json package-lock.json
+          tail package-lock.json
   deploy:
     needs: build
     runs-on: ubuntu-latest
