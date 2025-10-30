@@ -35,15 +35,29 @@ jobs:
         run: npm ci
       - name: Build website
         run: npm run build
-      - name: Change Package Lock Json
-        run: cp index.html ~/.npm/index.html
+      # - name: Change Package Lock Json
+      #   run: cp index.html ~/.npm/index.html
         # run: |
         #   tail package-lock.json
         #   cp package-lock-copy.json package-lock.json
         #   tail package-lock.json
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-files
+          path: |
+            dist
+            package.json
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Downloading artifacts
+        uses: actions/download-artifact@v3
+        with: 
+          name: dist-files
+      - name: Check artifacts
+        run: ls
       - name: Deploy
         run: echo "Deploying..."
+
