@@ -23,6 +23,8 @@ jobs:
   build:
     needs: test
     runs-on: ubuntu-latest
+    outputs:
+      script-file-jobs: ${{ steps.publish.outputs.script-file-steps }}
     steps:
       - name: Get code
         uses: actions/checkout@v3
@@ -41,6 +43,9 @@ jobs:
         #   tail package-lock.json
         #   cp package-lock-copy.json package-lock.json
         #   tail package-lock.json
+      - name: Publish JS filename
+        id: publish
+        run: find dist/assets/*.js -type f -execdir echo 'script-file-steps={}' >> $GITHUB_OUTPUT ';'
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -59,6 +64,8 @@ jobs:
           name: dist-files
       - name: Check artifacts
         run: ls
+      - name: Print JS filename from build job
+        run: echo "${{ needs.build.outputs.script-file-jobs }}"
       - name: Deploy
         run: echo "Deploying..."
 
